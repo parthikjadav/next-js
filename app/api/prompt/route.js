@@ -5,7 +5,7 @@ export const GET = async(req,res)=>{
  try {
     await connect();
 
-    const prompts = await Prompt.find({}).populate("creator")
+    const prompts = await Prompt.find().populate("creator")
     prompts.reverse()
     return new Response(JSON.stringify(prompts),{
         status:200
