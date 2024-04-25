@@ -3,18 +3,18 @@
 import Profile from '@components/Profile'
 import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 
-const viewProfile = () => {
+const tempPro=()=>{
     const searchParams = useSearchParams()
     const id = searchParams.get('id')
-    const [user,setUser]=useState()
+    const [user, setUser] = useState()
     const [posts, setPost] = useState([])
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                console.log(id,"id");
+                console.log(id, "id");
                 const res = await fetch(`/api/profile/${id.toString()}`)
                 const data = await res.json()
                 console.log(data.user, "data")
@@ -30,15 +30,21 @@ const viewProfile = () => {
 
     return (
         <div>
-        <Image src={user?.image} className='rounded-full mx-auto' width={60} height={60} alt='profileimage'/>
-        <Profile name={user?.username}
-            desc={`welcome to ${user?.username} profile`}
-            data={posts}
-            hendleEdit={()=>{}}
-            hendleDelete={()=>{}}
+            <Image src={user?.image} className='rounded-full mx-auto' width={60} height={60} alt='profileimage' />
+            <Profile name={user?.username}
+                desc={`welcome to ${user?.username} profile`}
+                data={posts}
+                hendleEdit={() => { }}
+                hendleDelete={() => { }}
             />
-            </div>
+        </div>
     )
+}
+
+const viewProfile = () => {
+    <Suspense fallback={<div>Loading...</div>}>
+      <tempPro />
+    </Suspense>
 }
 
 export default viewProfile

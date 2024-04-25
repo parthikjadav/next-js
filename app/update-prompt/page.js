@@ -2,10 +2,9 @@
 
 import Form from '@components/Form'
 import { useRouter, useSearchParams } from 'next/navigation';
-import React, { useEffect } from 'react'
+import React, { Suspense, useEffect } from 'react'
 
-
-const EditPrompt = () => {
+const EditTemp=()=>{
     const searchParams = useSearchParams();
     const promptId = searchParams.get("id");
     const router = useRouter()
@@ -15,27 +14,27 @@ const EditPrompt = () => {
         tag: "",
     })
 
-    useEffect(()=>{
-       const getPromptDetails = async()=>{
-        const res =await fetch(`/api/prompt/${promptId}`)
-        const data = await res.json()
-        setPost({
-            prompt:data.prompt,
-            tag:data.tag
-        })
-       }
+    useEffect(() => {
+        const getPromptDetails = async () => {
+            const res = await fetch(`/api/prompt/${promptId}`)
+            const data = await res.json()
+            setPost({
+                prompt: data.prompt,
+                tag: data.tag
+            })
+        }
 
-       if(promptId) getPromptDetails()
-    },[promptId])
+        if (promptId) getPromptDetails()
+    }, [promptId])
 
     const UpdatePrompt = async (e) => {
         e.preventDefault()
         setSubmitting(true)
-        
-        if(!promptId) alert("No id found")
-        
+
+        if (!promptId) alert("No id found")
+
         try {
-            console.log(post,'post')
+            console.log(post, 'post')
             const res = await fetch(`/api/prompt/${promptId}`, {
                 method: "PATCH",
                 body: JSON.stringify({
@@ -62,6 +61,12 @@ const EditPrompt = () => {
             hendleSubmit={UpdatePrompt}
         />
     )
+}
+
+const EditPrompt = () => {
+    <Suspense fallback={<div>Loading...</div>}>
+        <EditTemp/>
+    </Suspense>
 }
 
 export default EditPrompt
