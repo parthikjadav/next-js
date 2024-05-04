@@ -5,7 +5,8 @@ import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 import React, { Suspense, useEffect, useState } from 'react'
 
-const tempPro=()=>{
+
+const viewProfile = () => {
     const searchParams = useSearchParams()
     const id = searchParams.get('id')
     const [user, setUser] = useState()
@@ -39,12 +40,6 @@ const tempPro=()=>{
             />
         </div>
     )
-}
-
-const viewProfile = () => {
-    <Suspense fallback={<div>Loading...</div>}>
-      <tempPro />
-    </Suspense>
 }
 
 export default viewProfile
